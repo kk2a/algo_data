@@ -21,11 +21,11 @@ $$ N ^ X = N ^ {X - 1} \cdot N $$
 を用いて再帰的に計算する．
 
 ## kuhuu1.cpp
-繰り返し $2$ 乗法の再帰帰数を用いた実装．
+繰り返し $2$ 乗法の再帰帰数を用いた実装． 
 
 $$
 \begin{equation*}
-  N ^ X = \left\{
+  N ^ X = \left\\{
     \begin{array}{ll}
       N ^ {X / 2} \cdot N ^ {X / 2} & (X \text{が偶数}) \\
       N ^ {(X - 1) / 2} \cdot N ^ {(X - 1) / 2} \cdot N & (X \text{が奇数})
