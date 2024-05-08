@@ -2,6 +2,27 @@
 
 \usepackage{_my_style}
 
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  basicstyle=\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  stringstyle=\color{red},
+  showstringspaces=false,
+  language=C++,
+}
+
+% フッターにページ番号を表示するカスタムコマンド
+\makeatletter
+\def\@oddfoot{
+  \hfil \normalsize\rm\thepage\hfil % ページ番号を中央に配置
+}
+\def\@evenfoot{\@oddfoot} % 偶数ページにも同じフッターを適用
+\makeatother
+
+
 \begin{document}
 
 \section*{問題}
@@ -14,23 +35,26 @@
 \end{description}
 
 \subsection*{出典}
-\href{https://atcoder.jp/contests/abc169/tasks/abc169_c}{AtCoder Typical Contest 002 C}
+\href{https://atcoder.jp/contests/atc002/tasks/atc002_b}{AtCoder Typical Contest 002 B}
 
 
 \section*{コード解説}
 \subsection*{normal1.cpp}
-for文を用いて$ans$に$N$を$P$回かける．
+for文を用いて$ans$に$N$を$P$回かける．計算量は$O(P)$．
 
-計算量は$O(P)$．
+\lstinputlisting{normal1.cpp}
 
+\newpage
 \subsection*{normal2.cpp}
 再帰関数を用いた累乗のナイーブな実装．
 
 \[ N ^ X = N ^ {X - 1} \cdot N \]
 
-を用いて再帰的に計算する．
+を用いて再帰的に計算する．計算量は$O(P)$．
 
-計算量は$O(P)$．
+\lstinputlisting{normal2.cpp}
+
+\newpage
 
 \subsection*{kuhuu1.cpp}
 繰り返し$2$乗法の再帰帰数を用いた実装．
@@ -44,9 +68,11 @@ for文を用いて$ans$に$N$を$P$回かける．
   \right.
 \end{equation*}
 
-を用いて再帰的に計算する．
+を用いて再帰的に計算する．計算量は$O(\log P)$．
 
-計算量は$O(\log P)$．
+\lstinputlisting{kuhuu1.cpp}
+
+\newpage
 
 \subsection*{kuhuu2.cpp}
 繰り返し$2$乗法の非再帰的な実装．
@@ -62,5 +88,18 @@ for文を用いて$ans$に$N$を$P$回かける．
 \[ N ^ {2 ^ {i + 1}} = N ^ {2 ^ {i}} \cdot N ^ {2 ^ {i}} \]
 
 であるから，$N ^ {2 ^ i}$は簡単に計算できる．$h = \lceil \log_2(X) \rceil$だから，計算量は$O(\log P)$．
+
+\lstinputlisting{kuhuu2.cpp}
+
+\section*{まとめ}
+繰り返し$2$乗法の実装は，再帰関数を用いたものと，用いなかったもののどちらも，Github Copilotに大まかに実装してもらい，少し修正を加えている (余りを取るところ．) ．
+
+\begingroup
+\let\clearpage\relax
+\section*{参考記事}
+\endgroup
+\begin{itemize}
+\item \href{https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a#4-%E7%B4%AF%E4%B9%97-an}{「998244353 で割ったあまり」の求め方を総特集！ 〜 逆元から離散対数まで 〜 4章 累乗}
+\end{itemize}
 
 \end{document}
