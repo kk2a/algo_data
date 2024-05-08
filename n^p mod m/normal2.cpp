@@ -8,8 +8,9 @@ long long pow(long long n, long long p, long long m) {
     return n * pow(n, p - 1, m) % m;
 }
 
-int main(){
+int main() {
     long long n, m, p;
-    cout << pow(n, m, p) << endl;
+    cin >> n >> m >> p;
+    cout << pow(n, p, m) << endl;
     return 0;
 }

@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int main(){
+int main() {
     long long n, m, p;
     cin >> n >> m >> p;
     long long tmp = n % m, ans = 1, exp = p;

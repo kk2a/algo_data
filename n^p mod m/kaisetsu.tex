@@ -22,6 +22,7 @@
 \def\@evenfoot{\@oddfoot} % 偶数ページにも同じフッターを適用
 \makeatother
 
+\renewcommand{\lstlistingname}{リスト}
 
 \begin{document}
 
@@ -40,9 +41,9 @@
 
 \section*{コード解説}
 \subsection*{normal1.cpp}
-for文を用いて$ans$に$N$を$P$回かける．計算量は$O(P)$．
+for文を用いて$ans$に$N$を$P$回かける．計算量は$O(P)$．コードはリスト$1$に示す．
 
-\lstinputlisting{normal1.cpp}
+\lstinputlisting[caption={normal1.cpp}]{normal1.cpp}
 
 \newpage
 \subsection*{normal2.cpp}
@@ -50,9 +51,9 @@ for文を用いて$ans$に$N$を$P$回かける．計算量は$O(P)$．
 
 \[ N ^ X = N ^ {X - 1} \cdot N \]
 
-を用いて再帰的に計算する．計算量は$O(P)$．
+を用いて再帰的に計算する．計算量は$O(P)$．コードはリスト$2$に示す．
 
-\lstinputlisting{normal2.cpp}
+\lstinputlisting[caption={normal2.cpp}]{normal2.cpp}
 
 \newpage
 
@@ -68,9 +69,10 @@ for文を用いて$ans$に$N$を$P$回かける．計算量は$O(P)$．
   \right.
 \end{equation*}
 
-を用いて再帰的に計算する．計算量は$O(\log P)$．
+を用いて再帰的に計算する．計算量は$O(\log P)$．コードはリスト$3$に示す．
 
-\lstinputlisting{kuhuu1.cpp}
+\newpage
+\lstinputlisting[caption={kuhuu1.cpp}]{kuhuu1.cpp}
 
 \newpage
 
@@ -87,9 +89,42 @@ for文を用いて$ans$に$N$を$P$回かける．計算量は$O(P)$．
 
 \[ N ^ {2 ^ {i + 1}} = N ^ {2 ^ {i}} \cdot N ^ {2 ^ {i}} \]
 
-であるから，$N ^ {2 ^ i}$は簡単に計算できる．$h = \lceil \log_2(X) \rceil$だから，計算量は$O(\log P)$．
+であるから，$N ^ {2 ^ i}$は簡単に計算できる．$h = \lceil \log_2(X) \rceil$だから，計算量は$O(\log P)$．コードはリスト$4$に示す．
 
-\lstinputlisting{kuhuu2.cpp}
+\newpage
+\lstinputlisting[caption={kuhuu2.cpp}]{kuhuu2.cpp}
+
+\section*{計測}
+実行時間の測定は，AtCoderのコードテストで行った．ローカル環境だと，PCの個体差が出てしまうと考えたためである．言語はC++ 23 (gcc 12.2)を用いている．また，見やすくするために，normal2とkuhuu1のコードを比較し (どちらも再帰．) ，計算量に強く依存している$P$以外の$N, M$は固定する．ここでは，$N = 3, M = 100$とした．計測時間の比較を表$1$に示す．
+
+\begin{center}
+\begin{table}[ht]
+  \centering
+  \caption{実行時間の比較}
+\begin{tabular}{|c|c|c|c|}  
+  \hline
+  $P$ & normal (ms) & kuhuu (ms) & normal/kuhuu   \\
+  \hline
+  $10 ^ 1$ & 1 & 1 & 1 \\
+  \hline
+  $10 ^ 2$ & 1 & 1 & 1 \\
+  \hline
+  $10 ^ 3$ & 1 & 1 & 1 \\
+  \hline
+  $10 ^ 4$ & 1 & 1 & 1 \\
+  \hline 
+  $10 ^ 5$ & 2 & 1 & 2 \\
+  \hline
+  $10 ^ 6$ & 11 & 1 & 11 \\
+  \hline
+  $10 ^ 7$ & 108 & 1 & 108 \\
+  \hline 
+  $8 \cdot 10 ^ 7$ & 851 & 1 & 851 \\
+  \hline
+\end{tabular}
+\end{table}
+\end{center}
+normalは$P = 9 \cdot 10 ^ 7$でスタックオーバフローでエラーを吐いた．$P = 10 ^ 5$程度までならば，normalとkuhuuの実行時間はほぼ変わらない．しかし，$P = 10 ^ 7$程度までになると，その比は$100$倍以上になっている．kuhuuは$P = 10 ^ 18$まで計測したが，ずっと$1 \mathrm{ms}$であった．
 
 \section*{まとめ}
 繰り返し$2$乗法の実装は，再帰関数を用いたものと，用いなかったもののどちらも，Github Copilotに大まかに実装してもらい，少し修正を加えている (余りを取るところ．) ．

@@ -12,7 +12,7 @@ long long power(long long n, long long p, long long m) {
     else return (res * res) % m * n % m;
 }
 
-int main(){
+int main() {
     long long n, m, p;
     cin >> n >> m >> p;
     cout << power(n, p, m) << endl;
