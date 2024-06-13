@@ -107,10 +107,11 @@ int main() {
     cout << endl;
     // 1 1 2 3 4 5 6 9
 
-    tmp_ll = arr1;
-    BubbleSort(begin(tmp_ll), end(tmp_ll));
-    for (auto x : tmp_ll) cout << x << " ";
+    tmp_int = arr0;
+    BubbleSort(begin(tmp_int) + 2, begin(tmp_int) + 6);
+    for (auto x : tmp_int) cout << x << " ";
     cout << endl;
-    // 1 1 2 3 4 5 6 9
+    // 3 1 1 4 5 9 2 6
+
     return 0;
 }
