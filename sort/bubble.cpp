@@ -81,6 +81,7 @@ int main() {
     cout << endl;
     // 1 1 2 3 4 5 6 9
 
+    // 以下は気にしなくていいです
     tmp_int = arr0;
     BubbleSort(tmp_int);
     for (auto x : tmp_int) cout << x << " ";
