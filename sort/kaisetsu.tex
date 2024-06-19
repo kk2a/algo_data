@@ -1,0 +1,197 @@
+\documentclass[slide,20pt]{ltjsarticle}
+
+\usepackage{_my_style}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{diagbox}
+\usepackage{fancyhdr}
+
+\lstset{
+  basicstyle=\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  stringstyle=\color{red},
+  showstringspaces=false,
+  language=C++,
+}
+
+% フッターにページ番号を表示するカスタムコマンド
+\makeatletter
+\def\@oddfoot{
+  \hfil \normalsize\rmfamily\thepage\hfil % ページ番号を中央に配置
+}
+\def\@evenfoot{\@oddfoot} % 偶数ページにも同じフッターを適用
+\makeatother
+
+\renewcommand{\lstlistingname}{リスト}
+
+\begin{document}
+
+% 目次ページの前にカスタムヘッダー/フッターを設定
+\pagestyle{fancy}
+\fancyhf{} % 既存のヘッダーとフッターをクリア
+\fancyfoot[C]{} % フッターの中央を空白にする
+\renewcommand{\headrulewidth}{0pt} % ヘッダーの罫線を消す
+
+% 目次
+\tableofcontents
+\newpage
+
+\pagestyle{plain}
+
+\setcounter{page}{2}
+
+\section{はじめに}
+
+コードは全部\textcolor{red}{\href{https://github.com/kk2a/algo_data}{ここ}}にあるので，コードは直接見てください．
+
+考える配列の長さは特に断りがない限り，$N$とする．
+
+\section{バブルソート}
+
+\begin{itemize}
+  \item 「隣り合う要素を比較して，順番が逆であれば交換する」というのを「操作」と呼ぶことにする．バブルソートは，「操作」を繰り返すことで，数列を昇順に並べ替えるアルゴリズムである．
+  \item $i$回の「操作」を行うと，数列の右端から少なくとも$i$個の要素が正しい順番に並ぶ．$1$回の「操作」で$O(N)$回のアクセスを行い，ソート全体で「操作」が行われる回数は高々$N$回なので，時間計算量は$O(N ^ 2)$である．
+  \item ソートが完了していたら，直ちに処理を終了するような実装をする場合，$1$回の「操作」で終われば，時間計算量は$O(N)$でこれが最良である．
+  \item 逆に，完全に逆順になっている数列に対してバブルソートを行うと，$N$回の「操作」を行うことになり，時間計算量は$O(N ^ 2)$となる．
+\end{itemize}
+
+\section{バケットソート}
+
+\begin{itemize}
+  \item 最大値を$R$, 最小値を$L$とする．$R - L + 1$の大きさの配列をもって，各値が何回出現したかを記録して，その情報をもとにソートする．
+  \item $M = R - L + 1$と置けば，時間計算量は$O(M + N)$, 空間計算量は$O(M)$である．
+  \item $M$がかなり大きいと空間がすごく無駄になるので，座標圧縮したくなるが，結局座標圧縮でソートしないといけないので本末転倒である．
+\end{itemize}
+
+\section{ヒープソート}
+
+\begin{itemize}
+  \item 二分ヒープを用いたソートアルゴリズムである．
+  \item 根の取得$O(1)$と，根の更新$O(\log N)$が$N$回行われるので，時間計算量は$O(N \log N)$である．
+\end{itemize}
+
+\subsection{二分ヒープ}
+
+一応，二分ヒープの説明をする．ヒープソートはin-placeにやるので，0-indexedの二分ヒープを使う．ノードの添え字は，図\ref{fig:heap}のようにつけ，それぞれのノードに値は値を持っている．
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[
+    level distance=1.5cm,
+    level 1/.style={sibling distance=6cm},
+    level 2/.style={sibling distance=3cm},
+    level 3/.style={sibling distance=1.5cm},
+    every node/.style={circle, draw, minimum size=0.75cm},
+  ]
+  
+    % Root node
+    \node {0}
+      % Level 1
+      child {node {1}
+        % Level 2
+        child {node {3}
+          % Level 3
+          child {node {7}}
+          child {node {8}}
+        }
+        child {node {4}
+          % Level 3
+          child {node {9}}
+        }
+      }
+      child {node {2}
+        % Level 2
+        child {node {5}}
+        child {node {6}}
+      };
+  
+  \end{tikzpicture}
+  \caption{二分ヒープ}
+  \label{fig:heap}
+\end{figure}
+
+親ノードの値は，子ノードの値以上になるようにする．構築は，葉から根に向かって，違反があればswapするというのを繰り返せばよく，根の更新は，根から葉に向かって，違反があればswapするというのを繰り返せばよい．最初の構築は$O(N)$，再構築は高さが$O(\log N)$なので$O(\log N)$である．
+
+\section{挿入ソート}
+
+\begin{itemize}
+  \item 「$i$番目から$0$番目までこの順番で見ていって，逆の順番があれば交換する」というのを「$i$番目の操作」と呼ぶことにする．挿入ソートは，$i = 1, \cdots N - 1$に対して，この順番で$i$番目の操作を行うことで，数列を昇順に並べ替えるアルゴリズムである．
+  \item $j$番目の操作までを行ったとき，$j$番目まではソート済みだから，$j + 1$番目の操作では，正しい順番になった瞬間$j + 1$番目の操作を終了することができる．そのため，すでにソートされている場合，$i$番目の操作は$O(1)$だから，時間計算量は$O(N)$でこれが最良である．
+  \item 逆に，完全に逆順になっている数列に対して挿入ソートを行うと，$i$番目の操作では，$O(N)$回のアクセスが行われるため，時間計算量は$O(N ^ 2)$となる．
+\end{itemize}
+
+\section{マージソート}
+
+\begin{itemize}
+  \item マージソートは，分割統治法を用いたアルゴリズムである．
+  \item $N > 2$個の要素を$N / 2$個の要素に分割し，それぞれを再帰的にソートし，$2$つのソート済みの配列の大きくないほうを順番に取り続けるという操作で，$N$個の要素をソートする．$N \le 2$の時は，普通にする．
+  \item マージソートの時間計算量を$T(N)$とおくと，$T(N) = 2T(N / 2) + O(N)$なので，$T(N) = O(N \log N)$である ($O(N)$の$O(\log N)$個の和になっている．) ．
+\end{itemize}
+
+\section{クイックソート}
+
+\begin{itemize}
+  \item クイックソートは，マージソートとだいたい同じだが分割の仕方が違う．
+  \item ピボット呼ばれる値を$1$つ選び，それ未満とそれ以上に分割する．ピボットの選び方が悪いと，$1$個と$N - 1$個の分割が繰り返されることになって，時間計算量が$O(N ^ 2)$になる．
+  \item ここでは，$0$番目の値をピボットとして選ぶことにしているので，完全に逆順になっていたり，最初からソート済みであったりしたら，時間計算量は$O(N ^ 2)$である．
+\end{itemize}
+
+\section{時間計測}
+
+\begin{itemize}
+  \item ここでは，$N \le 10 ^ 6$のときの時間計測を行う．
+  \item 表\ref{tab:time_random}は，$0$から$N - 1$までの整数をランダムに割り当てたときの時間である．
+  \item 表\ref{tab:time_worst_b}, \ref{tab:time_worst_q}は，最悪の場合の時間である．
+\end{itemize}
+
+\begin{table}[h]
+  \centering
+  \caption{ランダムな数列の時間 (単位: ms)}
+  \label{tab:time_random}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    $N$ & バブル & バケット & ヒープ & 挿入 & マージ & クイック \\\hline
+    $10 ^ 3$ & 1 & 1 & 1 & 1 & 1 & 1 \\\hline
+    $10 ^ 4$ & 185 & 1 & 1 & 7 & 1 & 1 \\\hline
+    $10 ^ 5$ & 114176 & 5 & 50 & 41169 & 68 & 51 \\\hline
+    $10 ^ 6$ & \diagbox{}{}  & 5 & 65 & \diagbox{}{}  & 82 & 51 \\\hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[h]
+  \centering
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \caption{最悪の場合の時間 (バケット) (単位: ms)}
+    \label{tab:time_worst_b}
+    \begin{tabular}{|c|c|}
+      \hline
+      $M$ & バケット \\\hline
+      $10 ^ 7$ & 61 \\\hline
+      $10 ^ 8$ & 421 \\\hline
+      $10 ^ 9$ & 4198 \\\hline
+    \end{tabular}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \caption{最悪の場合の時間 (挿入，クイック) (単位: ms)}
+    \label{tab:time_worst_q}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      $N$ & 挿入 & クイック \\\hline
+      $10 ^ 3$ & 1 & 1 \\\hline
+      $10 ^ 4$ & 800 & 391 \\\hline
+      $10 ^ 5$ & 80812 & Error \\\hline
+    \end{tabular}
+  \end{minipage}
+\end{table}
+
+\section{おまけ}
+
+一般に全順序が与えられたときでもソートができる．比較が$O(1)$なら，同様に$O(N \log N)$でできる．例えば，逆順にソートしたいときとか，前半に偶数，後半に奇数を入れるみたいな特殊なソートもできる．詳しくは，最初に示したリンクから見てください．
+
+\end{document}
